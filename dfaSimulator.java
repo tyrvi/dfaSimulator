@@ -7,41 +7,28 @@ public class dfaSimulator {
 		
 		try {
 			Scanner sc = new Scanner(new File("input.txt"));
-
-			String[] states = createStatesArray(sc.nextLine());
-			String[] alphabet = createAlphabetArray(sc.nextLine());
-			HashMap transitionFunction;
+			
+			String[] states = splitLine(sc.nextLine());
+			String[] alphabet = splitLine(sc.nextLine());
+			Map<List<String>, String> transitionFunction = new HashMap<List<String>, String>();
 			
 			int counter = 0;
-			
-			//System.out.println(states);
-			//System.out.println(alphabet);
-			
+						
 			while (sc.hasNextLine() && counter < 2*states.length) {
 				String[] line = sc.nextLine().split(",");
-				Tuple transition = new Tuple(line[0], line[1]);
-				System.out.println(transition.getValue(0) + " " + transition.getValue(1));
+				List<String> temp = new ArrayList<String>(Arrays.asList(line[0], line[1]));
+				List<String> unmodList = Collections.unmodifiableList(temp);
+				transitionFunction.put(unmodList, line[2]);
 				counter++;
-				//System.out.println(line);
-				//String[] sline = line.split(",");
-
-				//for (int i = 0; i < sline.length; ++i) {
-				//	System.out.println(sline[i]);
-				//}
 			}
 
 			String startState = sc.nextLine();
-			String acceptStates = sc.nextLine();
-			//System.out.println(startState);
-			//System.out.println(acceptStates);
+			String[] acceptStates = splitLine(sc.nextLine());
 
-			//Set set = transitionFunction.entrySet();
-			//Iterator i = set.iterator();
-
-			//while (i.hasNext()) {
-			//	Map.Entry curr = (Map.Entry)i.next();
-			//	System.out.println(curr.getKey() + ": " + curr.getValue());
-			//}
+			DFA dfa = new DFA(states, alphabet, transitionFunction, startState, acceptStates);
+			//dfa.printTransitionFunction();
+			System.out.println(dfa.runDFA("11101100010001"));
+			
 		}
 		
 		catch (FileNotFoundException e) {
@@ -50,25 +37,13 @@ public class dfaSimulator {
 	}
 
 
-	public static String[] createStatesArray (String line) {
-		String[] states = line.split(",");
+	public static String[] splitLine (String line) {
+		String[] array = line.split(",");
 
-		return states;
+		return array;
 	}
 
-	public static String[] createAlphabetArray (String line) {
-		String [] alphabet = line.split(",");
-
-		return alphabet;
-	}
-
-	public static String[] createAcceptStatesArray (String line) {
-		String [] acceptStates = line.split(",");
-
-		return acceptStates;
-	}
-
-	//public static addTranstitionToFunction (string line) {
+	public static void buildTransitionFunction() {
 		
-	//}
+	}
 }
