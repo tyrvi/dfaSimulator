@@ -6,7 +6,7 @@ public class dfaSimulator {
 	public static void main (String [] args) {
 		
 		try {
-			Scanner sc = new Scanner(new File("input.txt"));
+			Scanner sc = new Scanner(new File("input4.txt"));
 			
 			String[] states = splitLine(sc.nextLine());
 			String[] alphabet = splitLine(sc.nextLine());
@@ -14,6 +14,7 @@ public class dfaSimulator {
 			String currentState;
 			String symbol;
 			String transitionState;
+			String[][] del = new String[states.length][alphabet.length];
 			
 			int counter = 0;
 			int numTransitions = alphabet.length*states.length;
@@ -27,8 +28,8 @@ public class dfaSimulator {
 				
 				int posCurrentState = Arrays.asList(states).indexOf(currentState);
 				int posSymbol = Arrays.asList(alphabet).indexOf(symbol);
-				transitionFunction[posCurrentState][posSymbol] = transitionState;		
-				
+				transitionFunction[posCurrentState][posSymbol] = transitionState;
+				del[posCurrentState][Arrays.asList(states).indexOf(transitionState)] = symbol;				
 				counter++;
 			}		
 
@@ -38,13 +39,30 @@ public class dfaSimulator {
 			//System.out.println(gnfa.toString());
 			//System.out.println(gnfa.transitionFunctionToString());
 			DFA dfa = new DFA(states, alphabet, transitionFunction, startState, acceptStates);
-			System.out.println(dfa.toString());
-			System.out.println(dfa.runDFA("1110"));
-			//GNFA gnfa = new GNFA(dfa);
+			//System.out.println(dfa.toString());
+			//System.out.println(dfa.runDFA("0000110"));
+			GNFA gnfa = new GNFA(dfa);
+			System.out.println(gnfa.toString());
+			//gnfa.createRegex();
+			//gnfa.createRegexRecursive(gnfa);
 			//System.out.println(gnfa.toString());
 			//GNFA gnfa1 = dfa.convertToGNFA();
 			//System.out.println(gnfa1.toString());
-			
+			String transitionFunctionString = "";
+		
+			for (int i = 0; i < del.length; ++i) {
+				transitionFunctionString += "\t" + states[i];
+			}
+			transitionFunctionString += "\n";
+			for (int i = 0; i < del.length; ++i) {
+				transitionFunctionString += states[i] + "\t";
+				for (int j = 0; j < del.length; ++j) {
+					transitionFunctionString += del[i][j] + "\t";
+				}
+				transitionFunctionString += "\n";
+			}
+
+			System.out.println(transitionFunctionString);
 		}
 		
 		catch (FileNotFoundException e) {

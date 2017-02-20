@@ -8,6 +8,7 @@ public class GNFA {
 	private String startState;
 	private String acceptState;
 	private String[] acceptStates;
+	private String[][] oldTransitionFunction;
 
 	// 5-tuple constructor assuming tuple describes a DFA
 	public GNFA (String[] states, String[] alphabet, String[][] transitionFunction, String startState, String[] acceptStates) {
@@ -24,6 +25,7 @@ public class GNFA {
 		}
 		this.transitionFunction = createNewTransitionFunction(transitionFunction, startState);
 		this.acceptState = "accept";
+		this.oldTransitionFunction = transitionFunction;
 	}
 
 	// DFA object constructor
@@ -46,7 +48,8 @@ public class GNFA {
 			this.states = createStateSetWithoutNewStart(this.startState, states);
 		}
 		this.transitionFunction = createNewTransitionFunction(transitionFunction, startState);
-		this.acceptState = "accept";	
+		this.acceptState = "accept";
+		this.oldTransitionFunction = transitionFunction;
 	}
 
 	// null constructor
@@ -57,6 +60,7 @@ public class GNFA {
 		this.startState = null;
 		this.acceptState = null;
 		this.acceptStates = null;
+		this.oldTransitionFunction = null;
 	}
 
 	// Add the "empty" string to the alphabet
@@ -127,6 +131,81 @@ public class GNFA {
 	}
 
 	public void createRegex() {
+		List states = new ArrayList(Arrays.asList(this.states));
+		int k = states.size();
+		startState = this.startState;
+		acceptState = this.acceptState;
+		String[][] transitionFunction = this.transitionFunction;
+		List alphabet = new ArrayList(Arrays.asList(this.alphabet));
+		convertTransitionFunction(states, alphabet, transitionFunction);
+	}
+
+	public void convertTransitionFunction(List states, List alphabet, String[][] transitionFunction) {
+		List<List<String>> delta = new ArrayList<List<String>>();
+		String[][] del = new String[states.size()][states.size()];
+		
+		//System.out.println(states.size());
+
+		for (int i = 0; i < transitionFunction.length; ++i) {
+			//System.out.println(Arrays.toString(transitionFunction[i]));
+			for (int j = 0; j < transitionFunction[i].length; ++j) {
+				String d = "(qi, qj):(" + states.get(i) + ", " + transitionFunction[i][j] + ") = " + alphabet.get(j);
+				System.out.println(d);
+				//if (transitionFunction[i][j] == null)
+				//del[i][states.indexOf(transitionFunction[i][j])] = alphabet.get(j).toString();
+			}
+		}
+		
+		String transitionFunctionString = "";
+		
+		for (int i = 0; i < del.length; ++i) {
+			transitionFunctionString += "\t" + states.get(i);
+		}
+		transitionFunctionString += "\n";
+		for (int i = 0; i < del.length; ++i) {
+			transitionFunctionString += states.get(i) + "\t";
+			for (int j = 0; j < this.alphabet.length; ++j) {
+				transitionFunctionString += del[i][j] + "\t";
+			}
+			transitionFunctionString += "\n";
+		}
+
+		System.out.println(transitionFunctionString);
+		
+	}
+
+	public GNFA createRegexRecursive(GNFA gnfa) {
+		List<String> states = new ArrayList<String>(Arrays.asList(gnfa.getStates()));
+		String startState = gnfa.getStartState();
+		String acceptState = gnfa.getAcceptState();
+		String[][] transitionFunction = gnfa.getTransitionFunction();
+		String[] alphabet = gnfa.getAlphabet();
+		
+		if (states.size() == 2) {
+			System.out.println(gnfa.toString());
+			return gnfa;
+		}
+		int i = 0;
+		
+		System.out.println(states.get(i));
+		states.remove(states.get(i));
+		//List<String> statesWithoutStartAndAccept = states;
+		
+		//statesWithoutStartAndAccept.remove(gnfa.getStartState());
+		//statesWithoutStartAndAccept.remove(gnfa.getAcceptState());
+		
+		//String qrip = statesWithoutStartAndAccept.get(0);
+		//System.out.println(statesWithoutStartAndAccept.get(0));
+		//statesWithoutStartAndAccept.remove(0);
+		String[] updatedStates = states.toArray(new String[states.size()]);
+		String[] acceptStates = gnfa.getAcceptStates();
+		GNFA updatedGNFA = new GNFA(updatedStates, alphabet, transitionFunction, startState, acceptStates);
+
+		return createRegexRecursive(updatedGNFA);
+		
+	}
+
+	public void updateTransitionFunction(String[][] transitionFunction) {
 		
 	}
 
@@ -160,4 +239,27 @@ public class GNFA {
 		return pretty;
 	}
 
+	public String[] getStates() {
+		return this.states;
+	}
+
+	public String[] getAlphabet() {
+		return this.alphabet;
+	}
+
+	public String[][] getTransitionFunction() {
+		return this.transitionFunction;
+	}
+
+	public String getStartState() {
+		return this.startState;
+	}
+
+	public String getAcceptState() {
+		return this.acceptState;
+	}
+
+	public String[] getAcceptStates() {
+		return this.acceptStates;
+	}
 }
