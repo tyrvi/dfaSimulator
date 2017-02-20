@@ -6,28 +6,43 @@ public class dfaSimulator {
 	public static void main (String [] args) {
 		
 		try {
-			Scanner sc = new Scanner(new File("input.txt"));
+			Scanner sc = new Scanner(new File("input1.txt"));
 			
 			String[] states = splitLine(sc.nextLine());
 			String[] alphabet = splitLine(sc.nextLine());
-			Map<List<String>, String> transitionFunction = new HashMap<List<String>, String>();
+			String[][] transitionFunction = new String[states.length][alphabet.length];
+			String currentState;
+			String symbol;
+			String transitionState;
 			
 			int counter = 0;
-						
-			while (sc.hasNextLine() && counter < 2*states.length) {
+			int numTransitions = alphabet.length*states.length;
+			
+			while (sc.hasNextLine() && counter < numTransitions) {
 				String[] line = sc.nextLine().split(",");
-				List<String> temp = new ArrayList<String>(Arrays.asList(line[0], line[1]));
-				List<String> unmodList = Collections.unmodifiableList(temp);
-				transitionFunction.put(unmodList, line[2]);
+				
+				//System.out.println(Arrays.toString(line));
+				
+				currentState = line[0];
+				symbol = line[1];
+				transitionState = line[2];
+				
+				int posCurrentState = Arrays.asList(states).indexOf(currentState);
+				int posSymbol = Arrays.asList(alphabet).indexOf(symbol);
+				transitionFunction[posCurrentState][posSymbol] = transitionState;		
+				
 				counter++;
 			}
 
+			//System.out.println(Arrays.deepToString(transitionFunction));
+			
+
 			String startState = sc.nextLine();
 			String[] acceptStates = splitLine(sc.nextLine());
-
-			DFA dfa = new DFA(states, alphabet, transitionFunction, startState, acceptStates);
-			//dfa.printTransitionFunction();
-			System.out.println(dfa.runDFA("11101100010001"));
+			GNFA gnfa = new GNFA(states, alphabet, transitionFunction, startState, acceptStates);
+			//DFA dfa = new DFA(states, alphabet, transitionFunction, startState, acceptStates);
+			//System.out.println(dfa.createTransitionFunctionString());
+			//System.out.println(dfa.runDFA("11110"));
 			
 		}
 		
