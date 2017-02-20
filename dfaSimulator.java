@@ -6,7 +6,7 @@ public class dfaSimulator {
 	public static void main (String [] args) {
 		
 		try {
-			Scanner sc = new Scanner(new File("input1.txt"));
+			Scanner sc = new Scanner(new File("input3.txt"));
 			
 			String[] states = splitLine(sc.nextLine());
 			String[] alphabet = splitLine(sc.nextLine());
@@ -39,10 +39,14 @@ public class dfaSimulator {
 
 			String startState = sc.nextLine();
 			String[] acceptStates = splitLine(sc.nextLine());
-			GNFA gnfa = new GNFA(states, alphabet, transitionFunction, startState, acceptStates);
-			//DFA dfa = new DFA(states, alphabet, transitionFunction, startState, acceptStates);
-			//System.out.println(dfa.createTransitionFunctionString());
+			//GNFA gnfa = new GNFA(states, alphabet, transitionFunction, startState, acceptStates);
+			//System.out.println(gnfa.toString());
+			//System.out.println(gnfa.transitionFunctionToString());
+			DFA dfa = new DFA(states, alphabet, transitionFunction, startState, acceptStates);
+			System.out.println(dfa.createTransitionFunctionString());
 			//System.out.println(dfa.runDFA("11110"));
+			GNFA gnfa = new GNFA(dfa);
+			System.out.println(gnfa.toString());
 			
 		}
 		
