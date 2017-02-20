@@ -1,17 +1,19 @@
 import java.util.*;
 
+// Implements a GNFA from a DFA
 public class GNFA {
 	private String[] states;
 	private String[] alphabet;
 	private String[][] transitionFunction;
 	private String startState;
 	private String acceptState;
-	private HashSet acceptStates;
-	
+	private String[] acceptStates;
+
+	// 5-tuple constructor assuming tuple describes a DFA
 	public GNFA (String[] states, String[] alphabet, String[][] transitionFunction, String startState, String[] acceptStates) {
 		Boolean startStateDecider = checkForIncomingStartStateTransitions(startState, transitionFunction);
 		this.alphabet = createNewAlphabet(alphabet);
-		this.acceptStates = new HashSet(Arrays.asList(acceptStates));
+		this.acceptStates = acceptStates;
 		if (startStateDecider == true) {
 			this.startState = "start";
 			this.states = createStateSetWithStart(this.startState, states);
@@ -24,18 +26,17 @@ public class GNFA {
 		this.acceptState = "accept";
 	}
 
+	// DFA object constructor
 	public GNFA (DFA dfa) {
 		String[] states = dfa.getStates();
 		String[] alphabet = dfa.getAlphabet();
 		String[][] transitionFunction = dfa.getTransitionFunction();
 		String startState = dfa.getStartState();
-		HashSet acceptStates = dfa.getAcceptStates();
-
-		//System.out.println(Arrays.toString())
+		String[] acceptStates = dfa.getAcceptStates();
 		
 		Boolean startStateDecider = checkForIncomingStartStateTransitions(startState, transitionFunction);
 		this.alphabet = createNewAlphabet(alphabet);
-		this.acceptStates = new HashSet(Arrays.asList(acceptStates));
+		this.acceptStates = acceptStates;
 		if (startStateDecider == true) {
 			this.startState = "start";
 			this.states = createStateSetWithStart(this.startState, states);
@@ -45,10 +46,20 @@ public class GNFA {
 			this.states = createStateSetWithoutNewStart(this.startState, states);
 		}
 		this.transitionFunction = createNewTransitionFunction(transitionFunction, startState);
-		this.acceptState = "accept";
-		
+		this.acceptState = "accept";	
 	}
 
+	// null constructor
+	public GNFA () {
+		this.states = null;
+		this.alphabet = null;
+		this.transitionFunction = null;
+		this.startState = null;
+		this.acceptState = null;
+		this.acceptStates = null;
+	}
+
+	// Add the "empty" string to the alphabet
 	private String[] createNewAlphabet(String[] alphabet) {
 		String[] newAlphabet = new String[alphabet.length+1];
 
@@ -58,11 +69,10 @@ public class GNFA {
 
 		newAlphabet[newAlphabet.length - 1] = "empty";
 
-		//System.out.println(Arrays.toString(newAlphabet));
-
 		return newAlphabet;
 	}
 
+	// Check if we need to create a new start state returns true if yes
 	private Boolean checkForIncomingStartStateTransitions(String startState, String[][] transitionFunction) {
 		for (int i = 0; i < transitionFunction.length; ++i) {
 			for (int j = 0; j < transitionFunction[0].length; ++j) {
@@ -81,8 +91,6 @@ public class GNFA {
 		System.arraycopy(states, 0, newStateSet, 0, states.length);
 		System.arraycopy(startAndAccept, 0, newStateSet, states.length, startAndAccept.length);
 
-		//System.out.println(Arrays.toString(newStateSet));
-
 		return newStateSet;
 	}
 	
@@ -93,27 +101,33 @@ public class GNFA {
 		System.arraycopy(states, 0, newStateSet, 0, states.length);
 		System.arraycopy(startAndAccept, 0, newStateSet, states.length, startAndAccept.length);
 
-		//System.out.println(Arrays.toString(newStateSet));
-
 		return newStateSet;
 	}
 
+	// Create the transition function for the GNFA
 	private String[][] createNewTransitionFunction(String[][] transitionFunction, String startState) {
+		HashSet acceptStates = new HashSet(Arrays.asList(this.acceptStates));
 		String[][] newTransitionFunction = new String[this.states.length][this.alphabet.length];
+		// New transition function needs to create empty transition to new accept state
 		for (int i = 0; i < transitionFunction.length; ++i) {
 			for (int j = 0; j < transitionFunction[0].length; ++j) {
 				newTransitionFunction[i][j] = transitionFunction[i][j];
 			}
-			if (this.acceptStates.contains(this.states[i])) {
+			if (acceptStates.contains(this.states[i])) {
 				newTransitionFunction[i][newTransitionFunction[0].length-1] = "accept";
 			}
 		}
 
+		// Start state has null transition to original start state
 		if (this.startState == "start") {
 			newTransitionFunction[newTransitionFunction.length-2][this.alphabet.length-1] = startState;
 		}
 
 		return newTransitionFunction;
+	}
+
+	public void createRegex() {
+		
 	}
 
 	public String transitionFunctionToString() {

@@ -15,7 +15,6 @@ public class DFA {
 		this.transitionFunction = transitionFunction;
 		this.startState = startState;
 		this.acceptStates = acceptStates;
-		//this.acceptStates = new HashSet(Arrays.asList(acceptStates));
 	}
 	
 	public DFA() {
@@ -25,7 +24,7 @@ public class DFA {
 		this.startState = null;
 		this.acceptStates = null;
 	}
-
+	
 	public Boolean runDFA(String input) {
 		String state = this.startState;
 		String symbol;
@@ -42,15 +41,13 @@ public class DFA {
 
 		return acceptStates.contains(state);
   	}
-	/*
-	public GNFA convertToGNFA(DFA dfa) {
-		//String[] acceptStates = new String[this.acceptStates.size()];
-		//acceptStates = this.acceptStates.toArray();
-		GNFA gnfa = new GNFA(this.states, this.alphabet, this.transitionFunction, this.startState, this.acceptStates.toArray(new String[this.acceptStates.size()]));
+	
+	public GNFA convertToGNFA() {
+		GNFA gnfa = new GNFA(this.states, this.alphabet, this.transitionFunction, this.startState, this.acceptStates);
 	
 		return gnfa;
 	}
-	*/
+	
 	public String[] getStates() {
 		return this.states;
 	}
@@ -71,7 +68,7 @@ public class DFA {
 		return this.acceptStates;
 	}
 	
-	public String createTransitionFunctionString() {
+	public String transitionFunctionToString() {
 		String transitionFunctionString = "";
 		
 		for (int i = 0; i < this.alphabet.length; ++i) {
@@ -86,5 +83,22 @@ public class DFA {
 			transitionFunctionString += "\n";
 		}
 		return transitionFunctionString;
+	}
+
+	public String alphabetToString() {
+		return Arrays.toString(this.alphabet);
+	}
+
+	public String statesToString() {
+		return Arrays.toString(this.states);
+	}
+
+	public String acceptStatesToString() {
+		return Arrays.toString(this.acceptStates);
+	}
+
+	public String toString() {
+		String pretty = "States = " + statesToString() + "\nAlphabet = " + alphabetToString() + "\nTransition Function\n" + transitionFunctionToString() + "Start state = " + this.startState + "\nAccept State = " + acceptStatesToString();
+		return pretty;
 	}
 }

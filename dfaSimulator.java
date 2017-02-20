@@ -6,7 +6,7 @@ public class dfaSimulator {
 	public static void main (String [] args) {
 		
 		try {
-			Scanner sc = new Scanner(new File("input3.txt"));
+			Scanner sc = new Scanner(new File("input.txt"));
 			
 			String[] states = splitLine(sc.nextLine());
 			String[] alphabet = splitLine(sc.nextLine());
@@ -20,9 +20,7 @@ public class dfaSimulator {
 			
 			while (sc.hasNextLine() && counter < numTransitions) {
 				String[] line = sc.nextLine().split(",");
-				
-				//System.out.println(Arrays.toString(line));
-				
+								
 				currentState = line[0];
 				symbol = line[1];
 				transitionState = line[2];
@@ -32,10 +30,7 @@ public class dfaSimulator {
 				transitionFunction[posCurrentState][posSymbol] = transitionState;		
 				
 				counter++;
-			}
-
-			//System.out.println(Arrays.deepToString(transitionFunction));
-			
+			}		
 
 			String startState = sc.nextLine();
 			String[] acceptStates = splitLine(sc.nextLine());
@@ -43,10 +38,12 @@ public class dfaSimulator {
 			//System.out.println(gnfa.toString());
 			//System.out.println(gnfa.transitionFunctionToString());
 			DFA dfa = new DFA(states, alphabet, transitionFunction, startState, acceptStates);
-			System.out.println(dfa.createTransitionFunctionString());
-			//System.out.println(dfa.runDFA("11110"));
-			GNFA gnfa = new GNFA(dfa);
-			System.out.println(gnfa.toString());
+			System.out.println(dfa.toString());
+			System.out.println(dfa.runDFA("1110"));
+			//GNFA gnfa = new GNFA(dfa);
+			//System.out.println(gnfa.toString());
+			//GNFA gnfa1 = dfa.convertToGNFA();
+			//System.out.println(gnfa1.toString());
 			
 		}
 		
