@@ -7,6 +7,7 @@ public class DFA {
 	private String[][] transitionFunction;
 	private String startState;
 	private String[] acceptStates;
+	private String[][] transitionTable;
 	//private HashSet acceptStates;
 	
 	public DFA(String[] states, String[] alphabet, String[][] transitionFunction, String startState, String[] acceptStates) {
