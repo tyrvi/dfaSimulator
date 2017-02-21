@@ -198,6 +198,7 @@ public class GNFA {
 				}
 			}
 			
+		
 		}
 		
 		return transitionTable[states.indexOf(startState)][states.indexOf(acceptState)];
@@ -219,7 +220,22 @@ public class GNFA {
 				
 			}
 		}
+		/*
+		String transitionFunctionString = "";
 		
+		for (int i = 0; i < delta.length; ++i) {
+			transitionFunctionString += "\t" + this.states[i];
+		}
+		transitionFunctionString += "\n";
+		for (int i = 0; i < delta.length; ++i) {
+			transitionFunctionString += this.states[i] + "\t";
+			for (int j = 0; j < delta.length; ++j) {
+				transitionFunctionString += delta[i][j] + "\t";
+			}
+			transitionFunctionString += "\n";
+		}
+		System.out.println(transitionFunctionString);
+		*/
 		return delta;
 	}
 
