@@ -5,9 +5,25 @@ public class dfaSimulator {
 	
 	public static void main (String [] args) {
 		
-		try {
-			Scanner sc = new Scanner(new File("input1.txt"));
+		DFA dfa = createDFAFromFile("input1.txt");
+		System.out.println(dfa.toString() + "\n");
+		//System.out.println(dfa.runDFA(""));
+		//GNFA gnfa = new GNFA(states, alphabet, transitionFunction, startState, acceptStates);
+		//GNFA gnfa = dfa.convertToGNFA();
+		GNFA gnfa = new GNFA(dfa);
+		System.out.println(gnfa.toString() + "\n");
 			
+		String x = gnfa.createRegex();
+		System.out.println(x);
+		
+	}
+
+	
+
+	public static DFA createDFAFromFile(String fileName) {
+		try {
+			Scanner sc = new Scanner(new File(fileName));
+
 			String[] states = sc.nextLine().split(",");
 			String[] alphabet = sc.nextLine().split(",");
 			String[][] transitionFunction = new String[states.length][alphabet.length];
@@ -17,7 +33,7 @@ public class dfaSimulator {
 						
 			int counter = 0;
 			int numTransitions = alphabet.length*states.length;
-			
+
 			while (sc.hasNextLine() && counter < numTransitions) {
 				String[] line = sc.nextLine().split(",");
 								
@@ -30,33 +46,22 @@ public class dfaSimulator {
 				transitionFunction[posCurrentState][posSymbol] = transitionState;
 			   				
 				counter++;
-			}		
+			}
 
+			
 			String startState = sc.nextLine();
 			String[] acceptStates = sc.nextLine().split(",");
-			
 
 			DFA dfa = new DFA(states, alphabet, transitionFunction, startState, acceptStates);
-			System.out.println(dfa.toString() + "\n");
-			//System.out.println(dfa.runDFA(""));
-			//GNFA gnfa = new GNFA(states, alphabet, transitionFunction, startState, acceptStates);
-			//GNFA gnfa = dfa.convertToGNFA();
-			GNFA gnfa = new GNFA(dfa);
-			System.out.println(gnfa.toString() + "\n");
-			
-			String x = gnfa.createRegex();
-			System.out.println(x);
+
+			return dfa;
+							
 		}
-		   
-		
 		catch (FileNotFoundException e) {
 			System.out.println("File not found");
+			
+			return null;
 		}
-	}
-
-	
-
-	public DFA createDFAFromFile() {
 		
 	}
 
