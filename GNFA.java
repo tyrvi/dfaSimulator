@@ -199,7 +199,7 @@ public class GNFA {
 			}
 			
 		}
-		System.out.println(transitionTable[states.indexOf(startState)][states.indexOf(acceptState)]);
+		
 		return transitionTable[states.indexOf(startState)][states.indexOf(acceptState)];
 	}
 
@@ -252,7 +252,7 @@ public class GNFA {
 	}
 
 	public String toString() {
-		String pretty = "States = " + statesToString() + "\nAlphabet = " + alphabetToString() + "\nTransition Function\n" + transitionFunctionToString() + "Start state = " + this.startState + "\nAccept State = " + this.acceptState;
+		String pretty = "GNFA:\nStates = " + statesToString() + "\nAlphabet = " + alphabetToString() + "\nTransition Function\n" + transitionFunctionToString() + "Start state = " + this.startState + "\nAccept State = " + this.acceptState;
 		return pretty;
 	}
 

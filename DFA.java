@@ -8,7 +8,6 @@ public class DFA {
 	private String startState;
 	private String[] acceptStates;
 	private String[][] transitionTable;
-	//private HashSet acceptStates;
 	
 	public DFA(String[] states, String[] alphabet, String[][] transitionFunction, String startState, String[] acceptStates) {
 		this.states = states;
@@ -81,7 +80,7 @@ public class DFA {
 	}
 
 	public String toString() {
-		String pretty = "States = " + statesToString() + "\nAlphabet = " + alphabetToString() + "\nTransition Function\n" + transitionFunctionToString() + "Start state = " + this.startState + "\nAccept State = " + acceptStatesToString();
+		String pretty = "DFA:\nStates = " + statesToString() + "\nAlphabet = " + alphabetToString() + "\nTransition Function\n" + transitionFunctionToString() + "Start state = " + this.startState + "\nAccept States = " + acceptStatesToString();
 		return pretty;
 	}
 
