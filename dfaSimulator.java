@@ -18,10 +18,7 @@ public class dfaSimulator {
 		System.out.println(gnfa.toString() + "\n");
 			
 		String x = gnfa.createRegex();
-		System.out.println(x);
-
-		//System.out.println("\u03F5");
-		
+		System.out.println(x);				
 	}
 
 	public static DFA createDFAFromFile(String fileName) {

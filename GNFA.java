@@ -71,7 +71,7 @@ public class GNFA {
 			newAlphabet[i] = alphabet[i];
 		}
 
-		newAlphabet[newAlphabet.length - 1] = "empty";
+		newAlphabet[newAlphabet.length - 1] = "\u03F5";
 
 		return newAlphabet;
 	}
@@ -194,7 +194,7 @@ public class GNFA {
 						deltaPrime = "(" + R1 + ")" + "(" + R2 + ")*" + "(" + R3 + ")";
 					}
 					else {
-						deltaPrime = "(" + R1 + ")" + "(" + R2 + ")*" + "(" + R3 + ")" + "U(" + R4 + ")";
+						deltaPrime = "(" + R1 + ")" + "(" + R2 + ")*" + "(" + R3 + ")" + "\u222A(" + R4 + ")";
 					}
 					
 					transitionTable[qiIndex][qjIndex] = deltaPrime;
@@ -217,7 +217,7 @@ public class GNFA {
 						delta[i][states.indexOf(transitionFunction[i][j])] = alphabet.get(j).toString();
 					}
 					else {
-						delta[i][states.indexOf(transitionFunction[i][j])] += "U" +  alphabet.get(j).toString();
+						delta[i][states.indexOf(transitionFunction[i][j])] += "\u222A" +  alphabet.get(j).toString();
 					}
 				}
 				
