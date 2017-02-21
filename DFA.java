@@ -42,33 +42,15 @@ public class DFA {
 
 		return acceptStates.contains(state);
   	}
-	
+
+	// Converts the DFA to a GNFA returning a GNFA object
 	public GNFA convertToGNFA() {
 		GNFA gnfa = new GNFA(this.states, this.alphabet, this.transitionFunction, this.startState, this.acceptStates);
 	
 		return gnfa;
 	}
 	
-	public String[] getStates() {
-		return this.states;
-	}
-
-	public String[] getAlphabet() {
-		return this.alphabet;
-	}
-
-	public String[][] getTransitionFunction() {
-		return this.transitionFunction;
-	}
-
-	public String getStartState() {
-		return this.startState;
-	}
-
-	public String[] getAcceptStates() {
-		return this.acceptStates;
-	}
-	
+	// Printing and get methods
 	public String transitionFunctionToString() {
 		String transitionFunctionString = "";
 		
@@ -101,5 +83,25 @@ public class DFA {
 	public String toString() {
 		String pretty = "States = " + statesToString() + "\nAlphabet = " + alphabetToString() + "\nTransition Function\n" + transitionFunctionToString() + "Start state = " + this.startState + "\nAccept State = " + acceptStatesToString();
 		return pretty;
+	}
+
+	public String[] getStates() {
+		return this.states;
+	}
+
+	public String[] getAlphabet() {
+		return this.alphabet;
+	}
+
+	public String[][] getTransitionFunction() {
+		return this.transitionFunction;
+	}
+
+	public String getStartState() {
+		return this.startState;
+	}
+
+	public String[] getAcceptStates() {
+		return this.acceptStates;
 	}
 }

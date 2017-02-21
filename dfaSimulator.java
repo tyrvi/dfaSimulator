@@ -6,7 +6,7 @@ public class dfaSimulator {
 	public static void main (String [] args) {
 		
 		try {
-			Scanner sc = new Scanner(new File("input1.txt"));
+			Scanner sc = new Scanner(new File("input3.txt"));
 			
 			String[] states = splitLine(sc.nextLine());
 			String[] alphabet = splitLine(sc.nextLine());
@@ -59,9 +59,5 @@ public class dfaSimulator {
 		String[] array = line.split(",");
 
 		return array;
-	}
-
-	public static void buildTransitionFunction() {
-		
 	}
 }

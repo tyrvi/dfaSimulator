@@ -1,6 +1,6 @@
 import java.util.*;
 
-// Implements a GNFA from a DFA
+// Implements a GNFA can be created from a 5-tuple (states, alphabet, transition function, start state, accept states) or from a DFA object
 public class GNFA {
 	private String[] states;
 	private String[] alphabet;
@@ -130,7 +130,8 @@ public class GNFA {
 		return newTransitionFunction;
 	}
 
-	public void createRegex() {
+	// Create regular expression from the GNFA
+	public String createRegex() {
 		List states = new ArrayList(Arrays.asList(this.states));
 		startState = this.startState;
 		acceptState = this.acceptState;
@@ -197,14 +198,9 @@ public class GNFA {
 				}
 			}
 			
-			System.out.println("");
-			for (int i = 0; i < transitionTable.length; ++i) {
-				System.out.println(Arrays.toString(transitionTable[i]));
-			}
-			System.out.println("");
-			
 		}
 		System.out.println(transitionTable[states.indexOf(startState)][states.indexOf(acceptState)]);
+		return transitionTable[states.indexOf(startState)][states.indexOf(acceptState)];
 	}
 
 	public String[][] convertTransitionFunctionToTransitionTable(List states, List alphabet, String[][] transitionFunction) {
@@ -212,8 +208,6 @@ public class GNFA {
 		
 		for (int i = 0; i < transitionFunction.length; ++i) {
 			for (int j = 0; j < transitionFunction[i].length; ++j) {
-				//String d = "(qi, qj):(" + states.get(i) + ", " + transitionFunction[i][j] + ") = " + alphabet.get(j);
-				//System.out.println(d);
 				if (transitionFunction[i][j] != null) {
 					if (delta[i][states.indexOf(transitionFunction[i][j])] == null) {
 						delta[i][states.indexOf(transitionFunction[i][j])] = alphabet.get(j).toString();
@@ -225,26 +219,13 @@ public class GNFA {
 				
 			}
 		}
-		/*
-		String transitionFunctionString = "";
 		
-		for (int i = 0; i < del.length; ++i) {
-			transitionFunctionString += "\t" + states.get(i);
-		}
-		transitionFunctionString += "\n";
-		for (int i = 0; i < del.length; ++i) {
-			transitionFunctionString += states.get(i) + "\t";
-			for (int j = 0; j < del.length; ++j) {
-				transitionFunctionString += del[i][j] + "\t";
-			}
-			transitionFunctionString += "\n";
-		}
-
-		System.out.println(transitionFunctionString);
-		*/
 		return delta;
 	}
 
+
+	
+	// Print and get methods
 	public String transitionFunctionToString() {
 		String transitionFunctionString = "";
 		
