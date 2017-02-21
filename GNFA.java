@@ -76,7 +76,7 @@ public class GNFA {
 		return newAlphabet;
 	}
 
-	// Check if we need to create a new start state returns true if yes
+	// Check if we need to create a new start state returns true if we do
 	private Boolean checkForIncomingStartStateTransitions(String startState, String[][] transitionFunction) {
 		for (int i = 0; i < transitionFunction.length; ++i) {
 			for (int j = 0; j < transitionFunction[0].length; ++j) {
@@ -88,6 +88,7 @@ public class GNFA {
 		return false;
 	}
 
+	// We need to create a new start state so we add the new start and accept states to our set of states
 	private String[] createStateSetWithStart(String startState, String[] states) {
 		String[] startAndAccept = {startState, "accept"};
 		String[] newStateSet = new String[states.length + startAndAccept.length];
@@ -97,7 +98,8 @@ public class GNFA {
 
 		return newStateSet;
 	}
-	
+
+	// We do not need to create a new start state so we only add a new accept state to our set of states
 	private String[] createStateSetWithoutNewStart(String startState, String[] states) {
 		String[] startAndAccept = {"accept"};
 		String[] newStateSet = new String[states.length + startAndAccept.length];
@@ -122,7 +124,7 @@ public class GNFA {
 			}
 		}
 
-		// Start state has null transition to original start state
+		// Start state has empty transition to original start state
 		if (this.startState == "start") {
 			newTransitionFunction[newTransitionFunction.length-2][this.alphabet.length-1] = startState;
 		}
@@ -156,8 +158,9 @@ public class GNFA {
 		String R4 = "";
 		String deltaPrime = "";
 
+		// Non-recursive implementation of Convert(G) on page 73
 		while (statesCopy.size() > 2) {
-
+			//Choose qrip as long as it is not the start state and not the accept state
 			for (int k = 0; k < statesCopy.size(); ++k) {
 				if (!(startState.equals(statesCopy.get(k).toString())) && !(acceptState.equals(statesCopy.get(k).toString()))) {
 					qrip = statesCopy.get(k).toString();

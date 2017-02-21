@@ -19,6 +19,8 @@ public class dfaSimulator {
 			
 		String x = gnfa.createRegex();
 		System.out.println(x);
+
+		//System.out.println("\u03F5");
 		
 	}
 
