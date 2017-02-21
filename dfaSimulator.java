@@ -4,8 +4,12 @@ import java.util.*;
 public class dfaSimulator {
 	
 	public static void main (String [] args) {
-		
-		DFA dfa = createDFAFromFile("input1.txt");
+
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Enter a file name: ");
+		String file = sc.nextLine();
+		DFA dfa = createDFAFromFile(file);
+		//DFA dfa = createDFAFromFile("input1.txt");
 		System.out.println(dfa.toString() + "\n");
 		//System.out.println(dfa.runDFA(""));
 		//GNFA gnfa = new GNFA(states, alphabet, transitionFunction, startState, acceptStates);
@@ -17,8 +21,6 @@ public class dfaSimulator {
 		System.out.println(x);
 		
 	}
-
-	
 
 	public static DFA createDFAFromFile(String fileName) {
 		try {
