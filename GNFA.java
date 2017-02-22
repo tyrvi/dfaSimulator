@@ -248,7 +248,12 @@ public class GNFA {
 		for (int i = 0; i < this.states.length; ++i) {
 			transitionFunctionString += this.states[i] + "\t";
 			for (int j = 0; j < this.alphabet.length; ++j) {
-				transitionFunctionString += this.transitionFunction[i][j] + "\t";
+				if (this.transitionFunction[i][j] == null) {
+					transitionFunctionString += "" + "\t";
+				}
+				else {
+					transitionFunctionString += this.transitionFunction[i][j] + "\t";
+				}
 			}
 			transitionFunctionString += "\n";
 		}
