@@ -35,7 +35,7 @@ public class GNFA {
 		String[][] transitionFunction = dfa.getTransitionFunction();
 		String startState = dfa.getStartState();
 		String[] acceptStates = dfa.getAcceptStates();
-		
+
 		Boolean startStateDecider = checkForIncomingStartStateTransitions(startState, transitionFunction);
 		this.alphabet = createNewAlphabet(alphabet);
 		this.acceptStates = acceptStates;
@@ -134,7 +134,7 @@ public class GNFA {
 
 	// Create regular expression from the GNFA
 	public String createRegex() {
-		List states = new ArrayList(Arrays.asList(this.states));
+		List states = new ArrayList(Arrays.asList(this.states)); // used to index transition table
 		startState = this.startState;
 		acceptState = this.acceptState;
 		String[][] transitionFunction = this.transitionFunction;
@@ -179,21 +179,27 @@ public class GNFA {
 					qiIndex = states.indexOf(qi);
 					qjIndex = states.indexOf(qj);
 					
+					// (R1)(R2)*(R3)U(R4)					
 					R1 = transitionTable[qiIndex][qripIndex];
 					R2 = transitionTable[qripIndex][qripIndex];
 					R3 = transitionTable[qripIndex][qjIndex];
 					R4 = transitionTable[qiIndex][qjIndex];
-					
+
+					// concatenation with the null set is null and the union of the null set and null is null (R1)(R2)*(null)Unull = null
 					if ((R1 == null || R2 == null || R3 == null) && R4 == null) {
 						deltaPrime = null;
 					}
+					// concatenation with the null set is null (R1)(R2)*(null) = null
 					else if (R1 == null || R2 == null || R3 == null) {
 						deltaPrime = "(" + R4 + ")";
 					}
+					// union with the null set is that thing ie. (R1)(R2)*(R3)Unull = (R1)(R2)*(R3)
 					else if (R4 == null) {
 						deltaPrime = "(" + R1 + ")" + "(" + R2 + ")*" + "(" + R3 + ")";
 					}
+					// Otherwise (R1)(R2)*(R3)U(R4)
 					else {
+						// "\u222A" is the unicode symbol for union
 						deltaPrime = "(" + R1 + ")" + "(" + R2 + ")*" + "(" + R3 + ")" + "\u222A(" + R4 + ")";
 					}
 					
@@ -203,10 +209,11 @@ public class GNFA {
 			
 		
 		}
-		
+		// return the single transition left in the table from the start state to the accept state
 		return transitionTable[states.indexOf(startState)][states.indexOf(acceptState)];
 	}
 
+	// Converts the transition function to a transition table that is index by the states with the transition symbol as the values
 	public String[][] convertTransitionFunctionToTransitionTable(List states, List alphabet, String[][] transitionFunction) {
 		String[][] delta = new String[states.size()][states.size()];
 		
@@ -217,28 +224,14 @@ public class GNFA {
 						delta[i][states.indexOf(transitionFunction[i][j])] = alphabet.get(j).toString();
 					}
 					else {
+						// "\u222A" is the unicode symbol for union
 						delta[i][states.indexOf(transitionFunction[i][j])] += "\u222A" +  alphabet.get(j).toString();
 					}
 				}
 				
 			}
 		}
-		/*
-		String transitionFunctionString = "";
 		
-		for (int i = 0; i < delta.length; ++i) {
-			transitionFunctionString += "\t" + this.states[i];
-		}
-		transitionFunctionString += "\n";
-		for (int i = 0; i < delta.length; ++i) {
-			transitionFunctionString += this.states[i] + "\t";
-			for (int j = 0; j < delta.length; ++j) {
-				transitionFunctionString += delta[i][j] + "\t";
-			}
-			transitionFunctionString += "\n";
-		}
-		System.out.println(transitionFunctionString);
-		*/
 		return delta;
 	}
 

@@ -4,21 +4,43 @@ import java.util.*;
 public class dfaSimulator {
 	
 	public static void main (String [] args) {
-
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Enter a file name: ");
 		String file = sc.nextLine();
+		System.out.println("Enter 1 to display the DFA and read strings on the DFA\nEnter 2 to create and display a GNFA from the DFA\nEnter 3 to create a regular Expression from the GNFA\nEnter 0 to exit");
 		DFA dfa = createDFAFromFile(file);
-		//DFA dfa = createDFAFromFile("input1.txt");
-		System.out.println(dfa.toString() + "\n");
-		//System.out.println(dfa.runDFA(""));
-		//GNFA gnfa = new GNFA(states, alphabet, transitionFunction, startState, acceptStates);
-		//GNFA gnfa = dfa.convertToGNFA();
-		GNFA gnfa = new GNFA(dfa);
-		System.out.println(gnfa.toString() + "\n");
-			
-		String x = gnfa.createRegex();
-		System.out.println(x);				
+		while (true) {
+			String input = sc.nextLine();
+			if (input.equals("1")) {
+				System.out.println(dfa.toString()+"\n");
+				while (true) {
+					System.out.print("Enter a string or -1 to exit: ");
+					String inputString = sc.nextLine();
+					if (inputString.equals("-1")) break;
+					try {
+						System.out.println(dfa.runDFA(inputString));
+					}
+					catch (ArrayIndexOutOfBoundsException e) {
+						System.out.println("Your string had a symbol not in the alphabet. Please enter a new string.");
+					}
+					System.out.println();
+				}
+			}
+			else if (input.equals("2")) {
+				GNFA gnfa = new GNFA(dfa);
+				System.out.println(gnfa.toString()+"\n");
+			}
+			else if (input.equals("3")) {
+				GNFA gnfa = new GNFA(dfa);
+				System.out.println(gnfa.createRegex());
+				System.out.println();
+			}
+			else if (input.equals("0")) {
+				break;
+			}
+
+			System.out.println("Enter 1 to display the DFA and read strings on the DFA\nEnter 2 to create and display a GNFA from the DFA\nEnter 3 to create a regular Expression from the GNFA\nEnter 0 to exit");
+		}		
 	}
 
 	public static DFA createDFAFromFile(String fileName) {
